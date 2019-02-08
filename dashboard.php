@@ -4,7 +4,7 @@
 
     if(isset($_REQUEST['submit'])){
         extract($_REQUEST);
-        $register = $user->reg_user($fname,$lname,$address,$age,$gender,$birthday);
+        $register = $user->reg_user($fname,$lname,$address,$age,$gender,$birthday,$prelim,$midterm,$finals);
         if($register){
             echo '<br><br><p class="text-info"><b>Registration successful</b></p>';
             
@@ -25,8 +25,9 @@ include './includes/header.php';
     <span></span>
   </div>  
   <div class="list">
-    <div class="item"><button class="butnav btn-info "  onclick="openOperate(event, 'Add')" id="defaultOpen">Add</button> </div>
     <div class="item"><button class="butnav btn-info"  onclick="openOperate(event, 'View')" id="defaultOpen">View</button></div>
+    <div class="item"><button class="butnav btn-info "  onclick="openOperate(event, 'Add')" id="defaultOpen">Add</button> </div>
+    
     
     <div> <a href="includes/logout.php" onclick="return(sublog())" class="btn btn-danger mt-1" style="font-family: 'Baloo Thambi';">LOGOUT</a></div>
   </div>
@@ -38,7 +39,7 @@ include './includes/header.php';
     $result = $mysqli->query("SELECT * FROM std_table") or die($mysqli->error);
   ?> 
 
- <div class="card ml-5">
+ <div class="card ml-2">
     <table class="table">
       <thead>
         
@@ -49,6 +50,10 @@ include './includes/header.php';
           <th >Age</th>
           <th >Gender</th>
           <th >Birthday</th>
+          <th >Prelim</th>
+          <th >Midterm</th>
+          <th >Finals</th>
+          <th >Average</th>
           <th>Action</th>
         </tr>
       </thead> 
@@ -61,6 +66,10 @@ include './includes/header.php';
           <td><?php echo $row['age']; ?></td>
           <td><?php echo $row['gender']; ?></td>
           <td><?php echo $row['birthday']; ?></td>
+          <td><?php echo $row['prelim']; ?></td>
+          <td><?php echo $row['midterm']; ?></td>
+          <td><?php echo $row['finals']; ?></td>
+          <td><?php echo $row['average']; ?></td>
           <td>
            <a href="dashboard.php?get=<?php echo $_SESSION['id']; ?>&id=<?php echo $row['std_id']; ?>" 
                 class="btn btn-info">Edit</a>
@@ -79,7 +88,7 @@ if (isset($_GET["get"])) {
  $row = $user->select_data("std_table",$where);
 
 ?>
-<div class=" container card mt-5 col-sm-5">
+<div class=" container card mt-5 col-sm-5" >
  <form action="" method="POST" id="edit_products">
    <div class="form-group">
      <label for="inputEmail4">First Name</label>
@@ -105,6 +114,18 @@ if (isset($_GET["get"])) {
    <div class="form-group ">
      <label for="inputPassword4">Birthday</label>
      <input type="text" class="form-control" name="edit_day" id="edit_day" value="<?php echo $row['birthday']?>">
+   </div>
+   <div class="form-group ">
+     <label for="inputPassword4">Prelim</label>
+     <input type="text" class="form-control" name="edit_prelim" id="edit_prelim" value="<?php echo $row['prelim']?>">
+   </div>
+   <div class="form-group ">
+     <label for="inputPassword4">Midterm</label>
+     <input type="text" class="form-control" name="edit_midterm" id="edit_midterm" value="<?php echo $row['midterm']?>">
+   </div>
+   <div class="form-group ">
+     <label for="inputPassword4">Finals</label>
+     <input type="text" class="form-control" name="edit_finals" id="edit_finals" value="<?php echo $row['finals']?>">
    </div>
            <input type="submit" name="edit_menu" id="edit_menu" value="Edit" class="btn btn-success" />
  </form>
@@ -152,15 +173,37 @@ if (isset($_GET["get"])) {
   </div>
 
     <div class="form-group row">
+    <label for="" class="col-sm-2 col-form-label sz">Age</label>
+    <div class="col-sm-3">  
+      <input type="text" class="form-control" name="age" placeholder="age" required="">
+    </div>
     <label for="" class="col-sm-2 col-form-label sz">Birthday</label>
     <div class="col-sm-3">
       <input type="date" class="form-control" name="birthday"  placeholder="Birthday" required="">
     </div>
-<label for="" class="col-sm-2 col-form-label sz">Age</label>
+ 
+  </div>
+
+ <div class="form-group row">
+    <label for="" class="col-sm-2 col-form-label sz">Prelim</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" name="prelim"  placeholder="Prelim" required="">
+    </div>
+<label for="" class="col-sm-2 col-form-label sz">Midterm</label>
     <div class="col-sm-3">  
-      <input type="text" class="form-control" name="age" placeholder="age" required="">
+      <input type="text" class="form-control" name="midterm" placeholder="Midterm" required="">
     </div>
   </div>
+
+   <div class="form-group row">
+    <label for="" class="col-sm-2 col-form-label sz">Finals</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" name="finals"  placeholder="Finals" required="">
+    </div>
+
+  </div>
+
+
 
   <div class="form-group row">
     <div class="col-sm-7 ">

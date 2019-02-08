@@ -15,9 +15,10 @@ include "./core/database/connection.php";
 
 	}
 
-	public function reg_user($fname,$lname,$address,$age,$gender,$birthday){
-
-			$sql ="INSERT INTO std_table SET fname='$fname', lname='$lname', address='$address', age='$age', gender='$gender', birthday='$birthday'";
+	public function reg_user($fname,$lname,$address,$age,$gender,$birthday,$prelim,$midterm,$finals){
+			$average = (($prelim) + ($midterm) + ($finals))/3;
+			$sql ="INSERT INTO std_table SET fname='$fname', lname='$lname',address='$address', age='$age', gender='$gender', birthday='$birthday', prelim='$prelim', midterm='$midterm', finals='$finals', average='$average'";
+			// echo $sql;
 			$result = mysqli_query($this->db,$sql) or die(mysqli_connect_errno()."Data cannot insert inside table");
 			return $result;
 		}
@@ -133,6 +134,7 @@ return true;
 
 if(isset($_POST['edit_menu'])){
 $id = $_POST['id'];
+$average = (($_POST['edit_prelim']) + ($_POST['edit_midterm']) + ($_POST['edit_finals']))/3;
 $where = array("std_id"=>$id);
 $myarray = array (
 "std_id"=> $_POST['id'],
@@ -141,7 +143,11 @@ $myarray = array (
 "address"=> $_POST['edit_add'],
 "age"=> $_POST['edit_age'],
 "gender"=> $_POST['edit_gen'],
-"birthday"=> $_POST['edit_day']
+"birthday"=> $_POST['edit_day'],
+"prelim"=> $_POST['edit_prelim'],
+"midterm"=> $_POST['edit_midterm'],
+"finals"=> $_POST['edit_finals'],
+"average"=>$average
 );
 if ($user->update_data("std_table",$where,$myarray)) {
 # code...
